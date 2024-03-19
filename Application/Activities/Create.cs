@@ -4,16 +4,18 @@ using System.Linq;
 using System.Threading.Tasks;
 using Domain;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.Activities
 {
-    public class List
+    public class Create
     {
-        public class Query : IRequest<List<Activity>> { }
+        public class Command : IRequest
+        {
+            public Activity Activity { get; set; }
+        }
 
-        public class Handler : IRequestHandler<Query, List<Activity>>
+        public class Handler : IRequestHandler<Command>
         {
             private readonly DataContext _context;
             public Handler(DataContext context)
@@ -21,9 +23,11 @@ namespace Application.Activities
                 _context = context;
             }
 
-            public async Task<List<Activity>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task Handle(Command request, CancellationToken cancellationToken)
             {
-                return await _context.Activities.ToListAsync();
+                _context.Activities.Add(request.Activity);
+
+                await _context.SaveChangesAsync();
             }
         }
     }
