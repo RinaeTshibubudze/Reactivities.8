@@ -11,6 +11,7 @@ export default function ActivityForm({
   activity: selectedAcivity,
   closeForm,
 }: Props) {
+  // Add this line to set initial state
   const initialState = selectedAcivity ?? {
     id: "",
     title: "",
@@ -21,12 +22,14 @@ export default function ActivityForm({
     venue: "",
   };
 
+  // Add this line to set initial state and create a state for the form
   const [activity, setActivity] = useState(initialState);
 
+  //  Add this function to handle form submission
   function handleSubmit() {
     console.log(activity);
   }
-
+  // Add this function to handle input change
   function handleInputChange(
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) {
@@ -35,6 +38,7 @@ export default function ActivityForm({
   }
 
   return (
+    // Add this form to the return statement to create the form
     <Segment clearing>
       <Form onSubmit={handleSubmit} autoComplete="off">
         <Form.Input
