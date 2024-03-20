@@ -74,7 +74,7 @@ export default function ActivityForm({
         <Form.Input
           placeholder="City"
           value={activity.city}
-          name="c"
+          name="city"
           onChange={handleInputChange}
         />
         <Form.Input
