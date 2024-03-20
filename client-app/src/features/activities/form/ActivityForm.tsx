@@ -3,13 +3,18 @@ import { Activity } from "../../../app/models/activity";
 import { ChangeEvent, useState } from "react";
 
 interface Props {
+  // Add this line to the interface to accept an activity
+  // Add this line to the interface to create a function to close the form
+  // Add this line to the interface to create a function to handle form submission
   activity: Activity | undefined;
   closeForm: () => void;
+  createOrEdit: (activity: Activity) => void;
 }
 
 export default function ActivityForm({
   activity: selectedAcivity,
   closeForm,
+  createOrEdit,
 }: Props) {
   // Add this line to set initial state
   const initialState = selectedAcivity ?? {
@@ -25,9 +30,9 @@ export default function ActivityForm({
   // Add this line to set initial state and create a state for the form
   const [activity, setActivity] = useState(initialState);
 
-  //  Add this function to handle form submission
+  //  Add this function to handle form submission and call the createOrEdit function
   function handleSubmit() {
-    console.log(activity);
+    createOrEdit(activity);
   }
   // Add this function to handle input change
   function handleInputChange(
