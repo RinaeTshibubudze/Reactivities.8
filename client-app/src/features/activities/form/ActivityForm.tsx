@@ -1,15 +1,23 @@
 import { Button, Form, Segment } from "semantic-ui-react";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useStore } from "../../../app/Stores/store";
 import { observer } from "mobx-react-lite";
+import { useParams } from "react-router-dom";
+import { Activity } from "../../../app/models/activity";
+import LoadingComponent from "../../../app/layout/LoadingComponent";
 
 export default observer(function ActivityForm() {
   const { activityStore } = useStore();
-  const { selectedActivity, createActivity, updateActivity, loading } =
-    activityStore;
-
-  // Add this line to set initial state
-  const initialState = selectedActivity ?? {
+  const {
+    selectedActivity,
+    createActivity,
+    updateActivity,
+    loading,
+    loadActivity,
+    loadingInitial,
+  } = activityStore;
+  const { id } = useParams();
+  const [activity, setActivity] = useState<Activity>({
     id: "",
     title: "",
     category: "",
@@ -17,10 +25,11 @@ export default observer(function ActivityForm() {
     date: "",
     city: "",
     venue: "",
-  };
+  });
 
-  // Add this line to set initial state and create a state for the form
-  const [activity, setActivity] = useState(initialState);
+  useEffect(() => {
+    if (id) loadActivity(id).then(() => setActivity(selectedActivity!));
+  }, [id, loadActivity, selectedActivity]);
 
   //  Add this function to handle form submission and call the createOrEdit function
   function handleSubmit() {
@@ -33,6 +42,8 @@ export default observer(function ActivityForm() {
     const { name, value } = event.target;
     setActivity({ ...activity, [name]: value });
   }
+
+  if (loadingInitial) return <LoadingComponent content="Loading activity..." />;
 
   return (
     // Add this form to the return statement to create the form
